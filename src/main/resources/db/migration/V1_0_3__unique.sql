@@ -1,0 +1,5 @@
+ALTER TABLE product
+    ADD CONSTRAINT uk_name UNIQUE (name);
+
+ALTER TABLE product
+    ADD COLUMN create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP;

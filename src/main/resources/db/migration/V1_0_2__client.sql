@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS client
+(
+    client_id   BIGINT          PRIMARY KEY,
+    name        VARCHAR(60)     NOT NULL
+);
+
+CREATE SEQUENCE IF NOT EXISTS client_client_id INCREMENT BY 1 START WITH 1;
