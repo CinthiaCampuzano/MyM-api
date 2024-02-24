@@ -1,55 +1,45 @@
 package com.mym.point.controller;
 
 
-import com.mym.point.dto.*;
-import com.mym.point.entity.*;
-import com.mym.point.exception.*;
-import com.mym.point.service.*;
-import lombok.*;
+import com.mym.point.dto.ClientDto;
+import com.mym.point.exception.EntityAlreadyExistsException;
+import com.mym.point.exception.EntityNotFoundException;
+import com.mym.point.service.ClientService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
 @RestController
-@RequestMapping(value = "client")
+@RequestMapping(value = "clients")
 @RequiredArgsConstructor
 public class ClientController {
 
     private final ClientService clientService;
 
     @GetMapping
-    public List<ClientDto> getAllClients() {
-        List<ClientDto> clientDtoList = clientService.getAllClients();
-        return clientDtoList;
+    public List<ClientDto> getClients() {
+        return clientService.getClients();
     }
 
-    @GetMapping (value = "name/{nameClient}")
-    public ClientDto getAClient(@PathVariable String nameClient){
-        ClientDto clientDto = clientService.getAClient(nameClient);
-        return clientDto;
+    @GetMapping (value = "/{nameClient}")
+    public List<ClientDto> getClient(@PathVariable String nameClient){
+        return clientService.getClient(nameClient);
     }
 
     @PostMapping
-    public ClientDto createAClient(@RequestBody ClientDto clientDtoNew) throws EntityAlreadyExistsException {
-        ClientEntity clientEntity = clientService.createAClient(clientDtoNew);
-        ClientDto clientDto = ClientDto.builder()
-                .clientId(clientEntity.getClientId())
-                .name(clientEntity.getName())
-                .build();
-        return clientDto;
+    public ClientDto createClient(@RequestBody ClientDto newClient) throws EntityAlreadyExistsException {
+        return clientService.createClient(newClient);
+
     }
 
     @PutMapping
-    public ClientDto updateAClient(@RequestBody ClientDto clientDtoUpdate) throws EntityNotFoundException {
-        ClientEntity clientEntity = clientService.updateAClient(clientDtoUpdate);
-
-        ClientDto clientDto = ClientDto.builder()
-                .clientId(clientEntity.getClientId())
-                .name(clientEntity.getName())
-                .build();
-
-        return clientDto;
-
+    public void updateClient(@RequestBody ClientDto clientToUpdate) throws EntityNotFoundException, EntityAlreadyExistsException {
+         clientService.updateClient(clientToUpdate);
+    }
+    @DeleteMapping(value = "{id}")
+    public void deleteProduct(@PathVariable Long id) throws EntityNotFoundException {
+        clientService.deleteClient(id);
     }
 
 }

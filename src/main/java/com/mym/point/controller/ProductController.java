@@ -1,7 +1,6 @@
 package com.mym.point.controller;
 
 import com.mym.point.dto.ProductDto;
-import com.mym.point.entity.ProductEntity;
 import com.mym.point.exception.EntityAlreadyExistsException;
 import com.mym.point.exception.EntityNotFoundException;
 import com.mym.point.exception.InvalidProductException;
@@ -13,13 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "product")
+@RequestMapping(value = "products")
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping (value = "/products")
+    @GetMapping
     public List<ProductDto> getProducts(){
         return productService.getProducts();
     }
@@ -32,18 +31,8 @@ public class ProductController {
     @PostMapping
     public ProductDto createProduct(@Valid @RequestBody ProductDto newProduct) throws EntityAlreadyExistsException,
             InvalidProductException {
+       return productService.createProduct(newProduct);
 
-       ProductEntity newProductEntity = productService.createProduct(newProduct);
-        ProductDto newProductDto = ProductDto.builder()
-                        .productId(newProductEntity.getProductId())
-                        .code(newProductEntity.getCode())
-                        .name(newProductEntity.getName())
-                        .price(newProductEntity.getPrice())
-                        .unit(newProductEntity.getUnit())
-                        .createDate(newProductEntity.getCreateDate())
-                        .lastUpdate(newProductEntity.getLastUpdate())
-                        .build();
-        return newProductDto;
     }
 
     @PutMapping

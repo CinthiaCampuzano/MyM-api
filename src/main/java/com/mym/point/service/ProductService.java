@@ -50,7 +50,7 @@ public class ProductService {
         return productDtoList;
     }
 
-    public ProductEntity createProduct(ProductDto newProduct) throws EntityAlreadyExistsException, InvalidProductException {
+    public ProductDto createProduct(ProductDto newProduct) throws EntityAlreadyExistsException, InvalidProductException {
 
         if (newProduct.getCode() != null && productRepository.
                 existsByCode(newProduct.getCode())) {
@@ -72,7 +72,19 @@ public class ProductService {
                 .unit(newProduct.getUnit())
                 .build();
 
-        return productRepository.save(productEntityNew);
+         productRepository.save(productEntityNew);
+
+        ProductDto newProductDto = ProductDto.builder()
+                .productId(productEntityNew.getProductId())
+                .code(productEntityNew.getCode())
+                .name(productEntityNew.getName())
+                .price(productEntityNew.getPrice())
+                .unit(productEntityNew.getUnit())
+                .createDate(productEntityNew.getCreateDate())
+                .lastUpdate(productEntityNew.getLastUpdate())
+                .build();
+
+        return newProductDto;
 
     }
 
