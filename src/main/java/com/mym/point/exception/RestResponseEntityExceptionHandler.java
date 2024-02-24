@@ -19,5 +19,8 @@ public class RestResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleNotFound(EntityNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
-
+    @ExceptionHandler(value = {InvalidProductException.class})
+    public ResponseEntity<Object> handleConflict(InvalidProductException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
 }
